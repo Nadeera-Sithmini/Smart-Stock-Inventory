@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.sql.*, com.sliate.controller.DBConnection" %>
 <%
-    // ලොගින් වෙලා නැත්නම් ලොගින් පේජ් එකට හරවා යැවීම
+    
     if (session.getAttribute("userLoggedIn") == null || !(Boolean)session.getAttribute("userLoggedIn")) {
         response.sendRedirect("login.jsp");
         return;
@@ -10,7 +10,7 @@
     String msg = null;
     String errMsg = null;
 
-    // බිලක් සබ්මිට් කරද්දී වැඩ කරන කොටස
+  
     if ("pos_bill".equals(request.getParameter("action"))) {
         String productId = request.getParameter("productId");
         String qtyStr = request.getParameter("qty");
@@ -24,9 +24,9 @@
             
             try {
                 con = DBConnection.getConnection();
-                con.setAutoCommit(false); // Transactions ආරක්ෂිතව කරන්න auto commit අයින් කරනවා
+                con.setAutoCommit(false); // 
 
-                // 1. බඩුව ඩේටාබේස් එකේ තියෙනවද සහ ස්ටොක් ඇතිදැයි බැලීම
+                
                 psCheck = con.prepareStatement("SELECT product_name, price, quantity FROM products WHERE product_id = ?");
                 psCheck.setString(1, productId);
                 ResultSet rs = psCheck.executeQuery();
@@ -40,19 +40,19 @@
                     if (currentStock >= requestedQty) {
                         double totalAmount = price * requestedQty;
 
-                        // 2. 'sales' ටේබල් එකට ප්‍රධාන බිල් විස්තර ඇතුලත් කිරීම
+                       
                         psSales = con.prepareStatement("INSERT INTO sales (total_amount, sale_date) VALUES (?, NOW())", Statement.RETURN_GENERATED_KEYS);
                         psSales.setDouble(1, totalAmount);
                         psSales.executeUpdate();
 
-                        // අලුතින් හැදුණු Sale ID එක ලබා ගැනීම
+                      
                         ResultSet generatedKeys = psSales.getGeneratedKeys();
                         int saleId = 0;
                         if (generatedKeys.next()) {
                             saleId = generatedKeys.getInt(1);
                         }
 
-                        // 3. 'sales_items' ටේබල් එකට බිලේ අයිටම් විස්තර ඇතුලත් කිරීම (ඔයාගේ DB එකේ තියෙන unit_price Column එකට අනුව හැදුවා 💡)
+                        
                         psSalesItems = con.prepareStatement("INSERT INTO sales_items (sale_id, product_id, quantity, unit_price) VALUES (?, ?, ?, ?)");
                         psSalesItems.setInt(1, saleId);
                         psSalesItems.setInt(2, Integer.parseInt(productId));
@@ -60,13 +60,13 @@
                         psSalesItems.setDouble(4, price);
                         psSalesItems.executeUpdate();
 
-                        // 4. 'products' ටේබල් එකෙන් විකුණපු ප්‍රමාණය අඩු කර ස්ටොක් අප්ඩේට් කිරීම
+                        
                         psUpdateStock = con.prepareStatement("UPDATE products SET quantity = quantity - ? WHERE product_id = ?");
                         psUpdateStock.setInt(1, requestedQty);
                         psUpdateStock.setInt(2, Integer.parseInt(productId));
                         psUpdateStock.executeUpdate();
 
-                        con.commit(); // ඔක්කොම හරි නිසා DB එකට සේව් කරනවා
+                        con.commit(); 
                         msg = "🛒 Bill Generated Successfully! Sold " + requestedQty + "x " + prodName + " (Total: Rs. " + (int)totalAmount + ")";
                     } else {
                         errMsg = "❌ Out of Stock! Only " + currentStock + " items available for this product.";
