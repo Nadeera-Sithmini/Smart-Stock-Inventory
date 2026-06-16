@@ -151,7 +151,7 @@
         <div class="brand-logo">📦 SMART STOCK</div>
         <h3>Inventory Control Authentication</h3>
 
-        <%-- සර්ව්ලට් එකෙන් එන වැරදි ලොගින් මැසේජ් පෙන්වීමට --%>
+     
         <% if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-alert">
                 ⚠️ <%= request.getAttribute("errorMessage") %>
