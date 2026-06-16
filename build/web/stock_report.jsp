@@ -249,7 +249,7 @@
             double totalValue = 0.0;
             int criticalStockCount = 0;
 
-            // මුලින්ම මුළු ඩේටාබේස් එකම රීඩ් කරලා සාරාංශය ගණනය කරමු
+            
             try {
                 Connection con = DBConnection.getConnection();
                 Statement st = con.createStatement();
@@ -266,7 +266,7 @@
                 }
                 con.close();
             } catch(Exception e) {
-                // සයිලන්ට් හැන්ඩ්ලින්
+                
             }
         %>
 
@@ -306,7 +306,7 @@
                             try {
                                 Connection con = DBConnection.getConnection();
                                 Statement st = con.createStatement();
-                                // ප්‍රොඩක්ට් ටේබල් එකෙන් දත්ත ලෝඩ් කිරීම
+                                
                                 ResultSet rs = st.executeQuery("SELECT * FROM products");
                                 boolean hasProducts = false;
                                 
@@ -317,11 +317,10 @@
                                     int qty = rs.getInt("quantity");
                                     
                                     // [AI SIMULATION LOGIC]
-                                    // ප්‍රොඩක්ට් එකේ ID එක මත පදනම්ව දෛනිකව විකිණෙන සාමාන්‍ය ප්‍රමාණය (Sales Velocity) AI එකකින් වගේ සිමියුලේට් කරයි
-                                    double avgDailySales = 1.2 + (Math.abs(id.hashCode()) % 4) * 0.4;
-                                    if(qty > 50) { avgDailySales += 2.5; } // බඩු ගොඩක් තිබේ නම් විකිණීම වැඩියි ලෙස උපකල්පනය කෙරේ
                                     
-                                    // බඩුව සම්පූර්ණයෙන්ම ඉවර වෙන්න ගතවන දවස් ගණන ගණනය කිරීම
+                                    double avgDailySales = 1.2 + (Math.abs(id.hashCode()) % 4) * 0.4;
+                                    if(qty > 50) { avgDailySales += 2.5; } 
+                                  
                                     int daysRemaining = (int) Math.ceil(qty / avgDailySales);
                                     if(qty == 0) daysRemaining = 0;
                         %>
