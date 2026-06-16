@@ -18,7 +18,7 @@
         body {
             font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
             background-color: var(--bg-color);
-            /* පසුබිමට ලස්සන Neon Gradients දෙකක් දමා ඇත */
+            
             background-image: radial-gradient(circle at top left, rgba(0, 242, 254, 0.06), transparent 400px),
                               radial-gradient(circle at bottom right, rgba(79, 172, 254, 0.06), transparent 400px);
             margin: 0;
@@ -151,7 +151,7 @@
         <div class="brand-logo">📦 SMART STOCK</div>
         <h3>Inventory Control Authentication</h3>
 
-        <%-- සර්ව්ලට් එකෙන් එන වැරදි ලොගින් මැසේජ් පෙන්වීමට --%>
+        
         <% if (request.getAttribute("errorMessage") != null) { %>
             <div class="error-alert">
                 ⚠️ <%= request.getAttribute("errorMessage") %>
